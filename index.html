@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sra - Estudio Diabetes Comunitaria</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-1: #f4f8f1;
+      --bg-2: #d7efe0;
+      --card: #ffffff;
+      --ink: #173128;
+      --muted: #4a665a;
+      --primary: #0f766e;
+      --primary-strong: #115e59;
+      --accent: #f59e0b;
+      --danger: #b91c1c;
+      --ok: #166534;
+      --radius: 18px;
+      --shadow: 0 20px 48px rgba(18, 73, 56, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Manrope", "Segoe UI", sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 92% 8%, rgba(245, 158, 11, 0.22), transparent 32%),
+        radial-gradient(circle at 10% 90%, rgba(15, 118, 110, 0.2), transparent 26%),
+        linear-gradient(140deg, var(--bg-1), var(--bg-2));
+    }
+
+    .grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.35) 1px, transparent 0);
+      background-size: 3px 3px;
+      opacity: 0.22;
+    }
+
+    .app {
+      width: min(1200px, 94vw);
+      margin: 26px auto 40px;
+      position: relative;
+      z-index: 2;
+      animation: rise 700ms ease-out;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero {
+      padding: 26px;
+      border-radius: var(--radius);
+      background: linear-gradient(118deg, #0f766e, #115e59);
+      color: #f7fffd;
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(1.6rem, 2.8vw, 2.3rem);
+      letter-spacing: 0.2px;
+    }
+
+    .hero p {
+      margin: 0;
+      opacity: 0.92;
+      max-width: 78ch;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1.15fr 0.85fr;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      border: 1px solid rgba(23, 49, 40, 0.08);
+    }
+
+    .card h2 {
+      margin: 0 0 12px;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 1.3rem;
+    }
+
+    .subtitle {
+      font-size: 0.93rem;
+      color: var(--muted);
+      margin: 0 0 14px;
+    }
+
+    .section-title {
+      margin: 14px 0 10px;
+      font-size: 0.84rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #31564a;
+      font-weight: 700;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .span-2 { grid-column: span 2; }
+    .span-3 { grid-column: span 3; }
+    .span-4 { grid-column: span 4; }
+
+    label {
+      font-size: 0.8rem;
+      color: #304c42;
+      font-weight: 700;
+    }
+
+    input, select, textarea {
+      border: 1px solid #b6d5ca;
+      border-radius: 11px;
+      padding: 11px 10px;
+      font: inherit;
+      color: var(--ink);
+      background: #fbfffd;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.17);
+    }
+
+    textarea { min-height: 92px; resize: vertical; }
+
+    .inline-check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 11px;
+      border: 1px dashed #95b8aa;
+      background: #f6fcf9;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    .primary {
+      background: linear-gradient(125deg, var(--primary), var(--primary-strong));
+      color: #fff;
+    }
+
+    .ghost {
+      background: #ecf8f3;
+      color: var(--primary-strong);
+    }
+
+    .danger {
+      background: #fee2e2;
+      color: var(--danger);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .kpi {
+      background: linear-gradient(160deg, #f3fbf6, #edfaf4);
+      border-radius: 14px;
+      border: 1px solid #cde7d9;
+      padding: 10px;
+    }
+
+    .kpi .label {
+      font-size: 0.75rem;
+      color: #48695d;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .kpi .value {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-top: 3px;
+    }
+
+    .kpi.good .value { color: var(--ok); }
+
+    .note {
+      margin-top: 10px;
+      font-size: 0.88rem;
+      color: #35594e;
+      background: #f3faf7;
+      border: 1px dashed #a4cbba;
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    .table-wrap {
+      margin-top: 16px;
+      overflow-x: auto;
+      border: 1px solid #cfe7db;
+      border-radius: 14px;
+      background: #f8fffb;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 980px;
+    }
+
+    th, td {
+      padding: 9px 10px;
+      font-size: 0.88rem;
+      border-bottom: 1px solid #e0efe8;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      background: #e9f7f1;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #395d51;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    .muted { color: var(--muted); }
+    .ok { color: var(--ok); font-weight: 700; }
+    .bad { color: var(--danger); font-weight: 700; }
+
+    .status {
+      margin-top: 10px;
+      min-height: 20px;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 1040px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .app { width: min(98vw, 1200px); }
+      .hero { padding: 18px; }
+      .card { padding: 14px; }
+      .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .span-3, .span-4 { grid-column: span 2; }
+      .span-2 { grid-column: span 2; }
+      .stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grain"></div>
+  <main class="app">
+    <header class="hero">
+      <h1>Sra - Cuaderno de estudio para pacientes diabeticos</h1>
+      <p>Registro pre y post intervencion educativa comunitaria. Guarda datos clinicos, informacion de la intervencion y calcula el efecto observado de forma inmediata.</p>
+    </header>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Formulario de recogida de datos</h2>
+        <p class="subtitle">Completa primero valores basales (pre), aplica la intervencion de informacion y registra despues los valores post.</p>
+
+        <form id="studyForm">
+          <p class="section-title">Identificacion y contexto</p>
+          <div class="form-grid">
+            <div class="field span-2">
+              <label for="patientCode">Codigo de paciente</label>
+              <input id="patientCode" name="patientCode" required placeholder="Ej: DM-024" />
+            </div>
+            <div class="field">
+              <label for="age">Edad</label>
+              <input id="age" name="age" type="number" min="18" max="110" required />
+            </div>
+            <div class="field">
+              <label for="sex">Sexo</label>
+              <select id="sex" name="sex" required>
+                <option value="">Selecciona</option>
+                <option>Mujer</option>
+                <option>Hombre</option>
+                <option>Otro</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="dmType">Tipo de diabetes</label>
+              <select id="dmType" name="dmType" required>
+                <option value="">Selecciona</option>
+                <option>DM1</option>
+                <option>DM2</option>
+                <option>Gestacional</option>
+                <option>Otro</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="yearsDm">Anos de evolucion</label>
+              <input id="yearsDm" name="yearsDm" type="number" min="0" step="0.1" required />
+            </div>
+            <div class="field span-2">
+              <label for="comorbidity">Comorbilidades relevantes</label>
+              <input id="comorbidity" name="comorbidity" placeholder="HTA, dislipemia, obesidad..." />
+            </div>
+          </div>
+
+          <p class="section-title">Medidas pre intervencion</p>
+          <div class="form-grid">
+            <div class="field">
+              <label for="hba1cPre">HbA1c pre (%)</label>
+              <input id="hba1cPre" name="hba1cPre" type="number" step="0.1" required />
+            </div>
+            <div class="field">
+              <label for="glucosePre">Glucemia ayunas pre (mg/dL)</label>
+              <input id="glucosePre" name="glucosePre" type="number" step="1" required />
+            </div>
+            <div class="field">
+              <label for="weightPre">Peso pre (kg)</label>
+              <input id="weightPre" name="weightPre" type="number" step="0.1" required />
+            </div>
+            <div class="field">
+              <label for="knowledgePre">Conocimiento pre (0-10)</label>
+              <input id="knowledgePre" name="knowledgePre" type="number" step="1" min="0" max="10" required />
+            </div>
+          </div>
+
+          <p class="section-title">Intervencion educativa</p>
+          <div class="form-grid">
+            <div class="field">
+              <label for="interventionDate">Fecha de intervencion</label>
+              <input id="interventionDate" name="interventionDate" type="date" required />
+            </div>
+            <div class="field">
+              <label for="mode">Modalidad</label>
+              <select id="mode" name="mode" required>
+                <option value="">Selecciona</option>
+                <option>Individual</option>
+                <option>Grupal</option>
+                <option>Mixta</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="duration">Duracion (minutos)</label>
+              <input id="duration" name="duration" type="number" min="5" step="5" required />
+            </div>
+            <div class="field">
+              <label for="followupDays">Seguimiento en dias</label>
+              <input id="followupDays" name="followupDays" type="number" min="1" step="1" required />
+            </div>
+            <div class="field span-4">
+              <label for="topics">Contenidos informados</label>
+              <textarea id="topics" name="topics" placeholder="Alimentacion, adherencia terapeutica, ejercicio, autocontrol glucemico, pie diabetico..."></textarea>
+            </div>
+          </div>
+
+          <p class="section-title">Medidas post intervencion</p>
+          <div class="form-grid">
+            <div class="field">
+              <label for="hba1cPost">HbA1c post (%)</label>
+              <input id="hba1cPost" name="hba1cPost" type="number" step="0.1" required />
+            </div>
+            <div class="field">
+              <label for="glucosePost">Glucemia ayunas post (mg/dL)</label>
+              <input id="glucosePost" name="glucosePost" type="number" step="1" required />
+            </div>
+            <div class="field">
+              <label for="weightPost">Peso post (kg)</label>
+              <input id="weightPost" name="weightPost" type="number" step="0.1" required />
+            </div>
+            <div class="field">
+              <label for="knowledgePost">Conocimiento post (0-10)</label>
+              <input id="knowledgePost" name="knowledgePost" type="number" step="1" min="0" max="10" required />
+            </div>
+            <div class="field span-4 inline-check">
+              <input id="consent" name="consent" type="checkbox" required />
+              <label for="consent">Confirmo que existe consentimiento informado y datos anonimizados.</label>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="primary" type="submit">Guardar registro</button>
+            <button class="ghost" type="button" id="exportBtn">Exportar CSV</button>
+            <button class="danger" type="button" id="clearBtn">Borrar todos los datos</button>
+          </div>
+          <div class="status" id="status"></div>
+        </form>
+      </article>
+
+      <aside class="card">
+        <h2>Panel de impacto</h2>
+        <p class="subtitle">Resumen automatico del efecto de la intervencion en la muestra registrada.</p>
+
+        <div class="stats">
+          <div class="kpi">
+            <div class="label">Pacientes registrados</div>
+            <div class="value" id="kpiCount">0</div>
+          </div>
+          <div class="kpi good">
+            <div class="label">Mejora media HbA1c</div>
+            <div class="value" id="kpiA1c">0.00</div>
+          </div>
+          <div class="kpi good">
+            <div class="label">Mejora media glucemia</div>
+            <div class="value" id="kpiGlu">0.0</div>
+          </div>
+          <div class="kpi good">
+            <div class="label">Aumento medio conocimiento</div>
+            <div class="value" id="kpiKnow">0.0</div>
+          </div>
+          <div class="kpi good">
+            <div class="label">Respondedores HbA1c >= 0.5</div>
+            <div class="value" id="kpiRespond">0%</div>
+          </div>
+          <div class="kpi">
+            <div class="label">Seguimiento medio (dias)</div>
+            <div class="value" id="kpiDays">0</div>
+          </div>
+        </div>
+
+        <div class="note" id="studyNote">Sin datos todavia. Registra el primer paciente para ver resultados agregados.</div>
+      </aside>
+    </section>
+
+    <section class="card" style="margin-top: 16px;">
+      <h2>Base de datos local del estudio</h2>
+      <p class="subtitle">Los registros se guardan en tu navegador (localStorage). Puedes exportarlos a CSV para analisis estadistico externo.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Codigo</th>
+              <th>Edad</th>
+              <th>Sexo</th>
+              <th>Tipo DM</th>
+              <th>HbA1c pre</th>
+              <th>HbA1c post</th>
+              <th>Delta HbA1c</th>
+              <th>Glucemia pre</th>
+              <th>Glucemia post</th>
+              <th>Delta glucemia</th>
+              <th>Conocimiento pre</th>
+              <th>Conocimiento post</th>
+              <th>Delta conocimiento</th>
+              <th>Modalidad</th>
+              <th>Seguimiento (dias)</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr><td colspan="15" class="muted">No hay registros.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "sra_estudio_diabetes_v1";
+
+    const form = document.getElementById("studyForm");
+    const statusBox = document.getElementById("status");
+    const tableBody = document.getElementById("tableBody");
+    const exportBtn = document.getElementById("exportBtn");
+    const clearBtn = document.getElementById("clearBtn");
+
+    const kpiCount = document.getElementById("kpiCount");
+    const kpiA1c = document.getElementById("kpiA1c");
+    const kpiGlu = document.getElementById("kpiGlu");
+    const kpiKnow = document.getElementById("kpiKnow");
+    const kpiRespond = document.getElementById("kpiRespond");
+    const kpiDays = document.getElementById("kpiDays");
+    const studyNote = document.getElementById("studyNote");
+
+    function readRecords() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveRecords(records) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+    }
+
+    function toNumber(value) {
+      const n = Number(value);
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function mean(values) {
+      if (!values.length) return 0;
+      return values.reduce((acc, n) => acc + n, 0) / values.length;
+    }
+
+    function buildRecord(formData) {
+      const hba1cPre = toNumber(formData.get("hba1cPre"));
+      const hba1cPost = toNumber(formData.get("hba1cPost"));
+      const glucosePre = toNumber(formData.get("glucosePre"));
+      const glucosePost = toNumber(formData.get("glucosePost"));
+      const weightPre = toNumber(formData.get("weightPre"));
+      const weightPost = toNumber(formData.get("weightPost"));
+      const knowledgePre = toNumber(formData.get("knowledgePre"));
+      const knowledgePost = toNumber(formData.get("knowledgePost"));
+
+      return {
+        patientCode: String(formData.get("patientCode") || "").trim(),
+        age: toNumber(formData.get("age")),
+        sex: formData.get("sex"),
+        dmType: formData.get("dmType"),
+        yearsDm: toNumber(formData.get("yearsDm")),
+        comorbidity: String(formData.get("comorbidity") || "").trim(),
+
+        hba1cPre,
+        hba1cPost,
+        dHbA1c: +(hba1cPost - hba1cPre).toFixed(2),
+
+        glucosePre,
+        glucosePost,
+        dGlucose: +(glucosePost - glucosePre).toFixed(1),
+
+        weightPre,
+        weightPost,
+        dWeight: +(weightPost - weightPre).toFixed(1),
+
+        knowledgePre,
+        knowledgePost,
+        dKnowledge: +(knowledgePost - knowledgePre).toFixed(1),
+
+        interventionDate: formData.get("interventionDate"),
+        mode: formData.get("mode"),
+        duration: toNumber(formData.get("duration")),
+        followupDays: toNumber(formData.get("followupDays")),
+        topics: String(formData.get("topics") || "").trim(),
+
+        createdAt: new Date().toISOString()
+      };
+    }
+
+    function renderTable(records) {
+      if (!records.length) {
+        tableBody.innerHTML = '<tr><td colspan="15" class="muted">No hay registros.</td></tr>';
+        return;
+      }
+
+      tableBody.innerHTML = records.map((r) => {
+        const hbClass = r.dHbA1c <= -0.5 ? "ok" : "bad";
+        const gluClass = r.dGlucose < 0 ? "ok" : "bad";
+        const knowClass = r.dKnowledge >= 1 ? "ok" : "bad";
+
+        return `
+          <tr>
+            <td>${escapeHtml(r.patientCode)}</td>
+            <td>${r.age}</td>
+            <td>${escapeHtml(r.sex)}</td>
+            <td>${escapeHtml(r.dmType)}</td>
+            <td>${r.hba1cPre.toFixed(1)}</td>
+            <td>${r.hba1cPost.toFixed(1)}</td>
+            <td class="${hbClass}">${r.dHbA1c.toFixed(2)}</td>
+            <td>${r.glucosePre.toFixed(0)}</td>
+            <td>${r.glucosePost.toFixed(0)}</td>
+            <td class="${gluClass}">${r.dGlucose.toFixed(1)}</td>
+            <td>${r.knowledgePre.toFixed(0)}</td>
+            <td>${r.knowledgePost.toFixed(0)}</td>
+            <td class="${knowClass}">${r.dKnowledge.toFixed(1)}</td>
+            <td>${escapeHtml(r.mode)}</td>
+            <td>${r.followupDays}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function renderKpis(records) {
+      const n = records.length;
+      kpiCount.textContent = String(n);
+
+      if (!n) {
+        kpiA1c.textContent = "0.00";
+        kpiGlu.textContent = "0.0";
+        kpiKnow.textContent = "0.0";
+        kpiRespond.textContent = "0%";
+        kpiDays.textContent = "0";
+        studyNote.textContent = "Sin datos todavia. Registra el primer paciente para ver resultados agregados.";
+        return;
+      }
+
+      const meanDHbA1c = mean(records.map((r) => r.dHbA1c));
+      const meanDGlu = mean(records.map((r) => r.dGlucose));
+      const meanDKnow = mean(records.map((r) => r.dKnowledge));
+      const meanDays = mean(records.map((r) => r.followupDays));
+      const responders = records.filter((r) => r.dHbA1c <= -0.5).length;
+      const respPct = (responders / n) * 100;
+
+      kpiA1c.textContent = (-meanDHbA1c).toFixed(2);
+      kpiGlu.textContent = (-meanDGlu).toFixed(1);
+      kpiKnow.textContent = meanDKnow.toFixed(1);
+      kpiRespond.textContent = `${respPct.toFixed(1)}%`;
+      kpiDays.textContent = meanDays.toFixed(0);
+
+      studyNote.textContent = `Muestra actual: ${n} pacientes. Una variacion negativa en HbA1c y glucemia implica mejora clinica. Considera analisis estratificado por sexo, tipo de DM y modalidad de intervencion.`;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function updateStatus(message, isError = false) {
+      statusBox.textContent = message;
+      statusBox.className = "status " + (isError ? "bad" : "ok");
+    }
+
+    function refreshView() {
+      const records = readRecords();
+      renderTable(records);
+      renderKpis(records);
+    }
+
+    function toCsv(records) {
+      const header = [
+        "patientCode","age","sex","dmType","yearsDm","comorbidity",
+        "hba1cPre","hba1cPost","dHbA1c",
+        "glucosePre","glucosePost","dGlucose",
+        "weightPre","weightPost","dWeight",
+        "knowledgePre","knowledgePost","dKnowledge",
+        "interventionDate","mode","duration","followupDays","topics","createdAt"
+      ];
+
+      const rows = records.map((r) => header.map((h) => {
+        const value = r[h] ?? "";
+        const str = String(value).replaceAll('"', '""');
+        return `"${str}"`;
+      }).join(","));
+
+      return [header.join(","), ...rows].join("\n");
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(form);
+      const record = buildRecord(formData);
+      if (!record.patientCode) {
+        updateStatus("El codigo de paciente es obligatorio.", true);
+        return;
+      }
+
+      const records = readRecords();
+      records.push(record);
+      saveRecords(records);
+
+      form.reset();
+      document.getElementById("interventionDate").valueAsDate = new Date();
+
+      refreshView();
+      updateStatus("Registro guardado correctamente.");
+    });
+
+    exportBtn.addEventListener("click", () => {
+      const records = readRecords();
+      if (!records.length) {
+        updateStatus("No hay datos para exportar.", true);
+        return;
+      }
+
+      const csv = toCsv(records);
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      const date = new Date().toISOString().slice(0, 10);
+
+      link.href = url;
+      link.download = `estudio_diabetes_sra_${date}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      updateStatus("CSV exportado correctamente.");
+    });
+
+    clearBtn.addEventListener("click", () => {
+      const ok = window.confirm("Se borraran todos los registros locales. Deseas continuar?");
+      if (!ok) return;
+
+      localStorage.removeItem(STORAGE_KEY);
+      refreshView();
+      updateStatus("Base local borrada.");
+    });
+
+    // Inicializa la fecha de hoy para acelerar el flujo de trabajo en consulta.
+    document.getElementById("interventionDate").valueAsDate = new Date();
+    refreshView();
+  </script>
+</body>
+</html>
